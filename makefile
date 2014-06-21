@@ -1,7 +1,9 @@
 CC=g++
-usage:usage.cpp menu.o widget.o
-	$(CC) -o usage usage.cpp menu.o widget.o -lmenu -lncurses
-menu.o:menu.cpp widget.o
-	$(CC) -c -o menu.o menu.cpp widget.o -lmenu -lncurses
-widget.o:widget.cpp
-	$(CC) -c -o widget.o widget.cpp -lncurses
+usage.o:usage.cpp menuWidget.o
+	$(CC) -g -o usage.o usage.cpp menuWidget.o -lmenu -lncurses
+menu.o:menuWidget.cpp menuWidget.cpp wid.o
+	$(CC) -g -c -o menuWidget.o menuWidget.cpp widget.o -lmenu -lncurses
+wid.o:wid.cpp -lncurses -lmenu
+	$(CC) -g -c wid.cpp
+clean:
+	rm *.o

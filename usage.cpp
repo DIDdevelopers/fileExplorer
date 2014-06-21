@@ -1,4 +1,4 @@
-#include "menu.h"
+#include "menuWidget.h"
 #include <ncurses.h>
 #include <iostream>
 #include <string>
@@ -7,25 +7,19 @@ using namespace std;
 int main()
 {
 
-	cMenu *mainWidget = new cMenu();
-	DEBUG("Point 0");
-	getch();
+	cMenu *mainWidget = new cMenu;
 	string sInput;
-	cin >> sInput;
-	DEBUG("point xy");
-//	cout << "msg to be displayed" << sInput << endl;
-//	initscr();
-	DEBUG("Point T");
-	getch();
-	while(sInput != string("quit"))
-	{
-		DEBUG("Point Z");
-		mainWidget->addToMenu(sInput);
-		cin >> sInput;
-	}
-	DEBUG("Point X");
 	initscr();
-
+	refresh();
+	sInput = "Tourist";
+	mainWidget->addToMenu(sInput);
+	sInput = "Hello";
+	mainWidget->addToMenu(sInput);
+	sInput = "GoodNight";
+	mainWidget->addToMenu(sInput);
+	sInput = "Good Afternoon";
+	mainWidget->addToMenu(sInput);
 	mainWidget->show();
+	getch();
 	endwin();
 }
