@@ -28,3 +28,6 @@ void cWidget::print(string sMsg)
 
 }
 
+bool cWidget::onKeyPressed(int nKey)
+{
+}

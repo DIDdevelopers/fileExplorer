@@ -8,18 +8,26 @@ int main()
 {
 
 	cMenu *mainWidget = new cMenu;
-	string sInput;
 	initscr();
+	cbreak();
+	keypad(stdscr, 1);
+	noecho();
 	refresh();
-	sInput = "Tourist";
-	mainWidget->addToMenu(sInput);
-	sInput = "Hello";
-	mainWidget->addToMenu(sInput);
-	sInput = "GoodNight";
-	mainWidget->addToMenu(sInput);
-	sInput = "Good Afternoon";
-	mainWidget->addToMenu(sInput);
+	string sLine0 = "Tourist";
+	mainWidget->addToMenu(sLine0);
+	string sLine1 = "Hello";
+	mainWidget->addToMenu(sLine1);
+	string sLine2 = "GoodNight";
+	mainWidget->addToMenu(sLine2);
+	string sLine3 = "Good Afternoon";
+	mainWidget->addToMenu(sLine3);
 	mainWidget->show();
+	int nIn = getch();
+	while(nIn != 'q')
+	{
+		mainWidget->onKeyPressed(nIn);
+		nIn = getch();
+	}
 	getch();
 	endwin();
 }

@@ -45,7 +45,7 @@ public:
 	virtual void show();
 	void hide();
 	void print(string s);
-	
+	virtual bool onKeyPressed(int nKey) = 0;
 protected:
 	int m_nHeight;
 	int m_nWidth;
