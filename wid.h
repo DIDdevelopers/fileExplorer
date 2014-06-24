@@ -42,7 +42,7 @@ public:
 
 	}
 	
-	virtual void show();
+	virtual void show()=0;
 	void hide();
 	void print(string s);
 	virtual bool onKeyPressed(int nKey) = 0;
