@@ -10,20 +10,40 @@ cFileIndexer::cFileIndexer(const char *sPath){
 
 }
 
-void cFileIndexer::createIndex(){
+void cFileIndexer::createIndex(const char *sPwd){
 
- struct dirent *entry;
- string str;
- DIR *sdir;
- FILE *fp;
+DIR *pdir;
+struct dirent *entry;
+FILE *fp;
+//char *path;
+int len = 255;
+char final[len];
 
- fp = fopen(sPwd,"w+");
- sdir = opendir(sPwd);
- 
- while ((entry=readdir(sdir)) != NULL){
-  printf("%s\n",entry->d_name);
-  fprintf(fp, entry->d_name);
+fp = fopen("indx", "w+");
+pdir = opendir(sPwd);
+
+while((entry = readdir(pdir)) != NULL){
+
+ if(entry->d_type != DT_DIR){
+
+   snprintf(final, len, "%s/%s", sPwd, entry->d_name);
+   fprintf(fp, final);
+   fprintf(fp, "\n");
+   cout<<"file is "<<final<<endl;
  }
+ else if(strcmp(entry->d_name,".") == 0 || strcmp(entry->d_name,"..") == 0){
+   continue;
+ }
+ else{
+
+   snprintf(final, len, "%s/%s", sPwd, entry->d_name);
+   fprintf(fp, final);
+   fprintf(fp, "\n");
+   cout<<"DIR is "<<final<<endl;
+   createIndex(final);
+ }
+
+}
 
 }
 

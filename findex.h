@@ -8,7 +8,7 @@ class cFileIndexer{
 
  public:
   cFileIndexer(const char *sIndexPath);
-  void createIndex();
+  void createIndex(const char *sPath);
   void searchIndex();
 
  private:
