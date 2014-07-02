@@ -1,3 +1,0 @@
-fileindexer.cpp
-fileindexer.h
-new.txt

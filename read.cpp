@@ -1,8 +1,8 @@
 #include<dirent.h>
-#include<ncurses.h>
-#include<stdio.h>
+//#include<ncurses.h>
+//#include<stdio.h>
 #include<string>
-#include<strings.h>
+//#include<strings.h>
 #include<iostream>
 #include<fstream>
 #include<sstream>
@@ -11,7 +11,7 @@ using namespace std;
 void wrote(std::string, std::string );
 ofstream ifile;
 
-static void createIndex(std::string sPwd){
+void createIndex(std::string sPwd){
 
 DIR *pdir;
 struct dirent *entry;

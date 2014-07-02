@@ -1,83 +1,82 @@
 #include<dirent.h>
-#include<ncurses.h>
-#include<stdio.h>
 #include<string.h>
+#include<sstream>
+
 #include "findex.h"
 
-cFileIndexer::cFileIndexer(const char *sPath){
+cFileIndexer::cFileIndexer(std::string sPath){
 
  sPwd = sPath;
 
 }
 
-void cFileIndexer::createIndex(const char *sPwd){
+void cFileIndexer::createIndex(std::string sPwd){
 
 DIR *pdir;
 struct dirent *entry;
-FILE *fp;
-//char *path;
-int len = 255;
-char final[len];
 
-fp = fopen("indx", "w+");
-pdir = opendir(sPwd);
+if(!ifile.is_open())
+    ifile.open("index");
 
-while((entry = readdir(pdir)) != NULL){
+pdir = opendir(sPwd.c_str());
 
- if(entry->d_type != DT_DIR){
+ while((entry = readdir(pdir)) != NULL){
 
-   snprintf(final, len, "%s/%s", sPwd, entry->d_name);
-   fprintf(fp, final);
-   fprintf(fp, "\n");
-   cout<<"file is "<<final<<endl;
- }
- else if(strcmp(entry->d_name,".") == 0 || strcmp(entry->d_name,"..") == 0){
-   continue;
- }
- else{
+  std::string fname(entry->d_name);
+  std::stringstream image;
+  std::string word;
+  std::string curDir(".");
+  std::string preDir("..");
 
-   snprintf(final, len, "%s/%s", sPwd, entry->d_name);
-   fprintf(fp, final);
-   fprintf(fp, "\n");
-   cout<<"DIR is "<<final<<endl;
-   createIndex(final);
+  if(entry->d_type != DT_DIR){
+    wrote(sPwd, fname);
+  }
+  else if((fname.compare(curDir) == 0) || (fname.compare(preDir) == 0)){
+      continue;
+  }
+  else{
+      wrote(sPwd, fname);
+      image << sPwd.c_str()<<"/"<<fname;
+      word = image.str();
+      createIndex(word.c_str());
+  }
  }
 
 }
 
+void cFileIndexer::wrote(std::string sPwd, std::string fname){
+
+    if(! ifile.is_open()){
+
+       ifile.open("index");
+       if(ifile.good())
+          ifile << sPwd.c_str()<<"/"<<fname<<endl;
+    }
+    else{
+       if(ifile.good())
+          ifile << sPwd.c_str()<<"/"<<fname<<endl;
+    }
+
 }
 
 
-void cFileIndexer::searchIndex(){
 
-	int ch;
-        FILE *fp;
-        size_t len;
-        ssize_t read;
-        char *buf=NULL;
+void cFileIndexer::searchIndex(std::string sFind){
 
-        fp = fopen("indx", "r+");
+  std::string sPwd(sPwd);
+  std::string ssearch(sFind);
+  std::size_t pos = sPwd.length()+1;
+  char name[256];
 
-        initscr();
-        cbreak();
-        noecho();
-
-        printf("Just type the keyword to find the files \n");
- 	do{
-        	ch = getch();
-                while((read = getline(&buf, &len, fp)) != -1 ){
-                        if(read == EOF)
-                                break;
-                        if(strchr(buf, ch))
-                                printf("->%s\n",buf);
-                        refresh();
-                }
-                rewind(fp);
-	 
-	}while(ch != 'q');
-
-        getch(); 
-        endwin();
-
+  ifstream file("index");
+  
+  while(file.getline (name,256)){
+    std::string line(name);
+    if(!file.eof()){
+       std::size_t found = line.find(ssearch, pos);
+       if(found != std::string::npos)
+          std::cout << name <<endl;
+    }
+  }
 }
 

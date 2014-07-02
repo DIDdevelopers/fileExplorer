@@ -1,19 +1,20 @@
 #include<iostream>
+#include<fstream>
 #include<strings.h>
-#include<vector>
 
 using namespace std;
 
 class cFileIndexer{
 
  public:
-  cFileIndexer(const char *sIndexPath);
-  void createIndex(const char *sPath);
-  void searchIndex();
+  cFileIndexer(std::string );
+  void createIndex(std::string );
+  void searchIndex(std::string );
+  void wrote(std::string sPwd, std::string fname);
 
  private:
-  const char *sPwd;
-
+  std::string sPwd;
+  ofstream ifile;
 
 };
 
