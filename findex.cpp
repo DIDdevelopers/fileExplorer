@@ -64,7 +64,6 @@ void cFileIndexer::wrote(std::string sPwd, std::string fname){
 
 void cFileIndexer::searchIndex(std::string sFind){
     
-    std::string sPwd(sPwd);
     std::string ssearch(sFind);
     std::size_t pos = sPwd.length()+1;
     char name[256];
@@ -81,4 +80,15 @@ void cFileIndexer::searchIndex(std::string sFind){
         }
     }
 }
+
+
+
+int main()
+{
+
+	cFileIndexer *pIndexer = new cFileIndexer("/home/rahul/exprmnt");
+	pIndexer->createIndex("/home/rahul/exprmnt");
+	pIndexer->searchIndex("test");
+}
+
 
