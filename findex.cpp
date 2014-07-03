@@ -10,73 +10,75 @@ cFileIndexer::cFileIndexer(std::string sPath){
 
 }
 
+
 void cFileIndexer::createIndex(std::string sPwd){
 
-DIR *pdir;
-struct dirent *entry;
+    DIR *pdir;
+    struct dirent *entry;
+    std::string curDir(".");
+    std::string preDir("..");
 
-if(!ifile.is_open())
-    ifile.open("index");
+    if(!ifile.is_open())
+        ifile.open("index");
 
-pdir = opendir(sPwd.c_str());
+    pdir = opendir(sPwd.c_str());
 
- while((entry = readdir(pdir)) != NULL){
-
-  std::string fname(entry->d_name);
-  std::stringstream image;
-  std::string word;
-  std::string curDir(".");
-  std::string preDir("..");
-
-  if(entry->d_type != DT_DIR){
-    wrote(sPwd, fname);
-  }
-  else if((fname.compare(curDir) == 0) || (fname.compare(preDir) == 0)){
-      continue;
-  }
-  else{
-      wrote(sPwd, fname);
-      image << sPwd.c_str()<<"/"<<fname;
-      word = image.str();
-      createIndex(word.c_str());
-  }
- }
-
+    while((entry = readdir(pdir)) != NULL){
+  
+        std::string fname(entry->d_name);
+        std::stringstream image;
+        std::string word;
+        
+        if(entry->d_type != DT_DIR){
+            wrote(sPwd, fname);
+        }
+        else if((fname.compare(curDir) == 0) || (fname.compare(preDir) == 0)){
+            continue;
+        }
+        else{
+            wrote(sPwd, fname);
+            image << sPwd.c_str()<<"/"<<fname;
+            word = image.str();
+            createIndex(word.c_str());
+        }
+    }
 }
+
 
 void cFileIndexer::wrote(std::string sPwd, std::string fname){
 
     if(! ifile.is_open()){
 
-       ifile.open("index");
-       if(ifile.good())
-          ifile << sPwd.c_str()<<"/"<<fname<<endl;
+        ifile.open("index");
+        if(ifile.good()){
+            ifile << sPwd.c_str()<<"/"<<fname<<endl;
+        }
     }
     else{
-       if(ifile.good())
-          ifile << sPwd.c_str()<<"/"<<fname<<endl;
+        if(ifile.good()){
+            ifile << sPwd.c_str()<<"/"<<fname<<endl;
+        }
     }
-
 }
 
 
-
 void cFileIndexer::searchIndex(std::string sFind){
+    
+    std::string sPwd(sPwd);
+    std::string ssearch(sFind);
+    std::size_t pos = sPwd.length()+1;
+    char name[256];
 
-  std::string sPwd(sPwd);
-  std::string ssearch(sFind);
-  std::size_t pos = sPwd.length()+1;
-  char name[256];
+    ifstream file("index");
 
-  ifstream file("index");
-  
-  while(file.getline (name,256)){
-    std::string line(name);
-    if(!file.eof()){
-       std::size_t found = line.find(ssearch, pos);
-       if(found != std::string::npos)
-          std::cout << name <<endl;
+    while(file.getline (name,256)){
+        std::string line(name);
+        if(!file.eof()){
+            std::size_t found = line.find(ssearch, pos);
+            if(found != std::string::npos){
+                std::cout << name <<endl;
+            }
+        }
     }
-  }
 }
 
