@@ -22,9 +22,6 @@ public:
 		m_Window = 0;
 	}
 
-	~cWidget()
-	{
-	}
 	void setXY(int x, int y)
 	{
 		m_nX = x;
@@ -40,9 +37,12 @@ public:
 	{
 		m_nWidth = nWidth;
 
+	}					
+	WINDOW* getWindow()
+	{
+		return(m_Window);
 	}
-	
-	virtual void show()=0;
+	virtual void show();
 	void hide();
 	void print(string s);
 	virtual bool onKeyPressed(int nKey) = 0;

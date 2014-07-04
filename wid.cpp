@@ -1,12 +1,14 @@
 #include "wid.h"
 
+
+
 void cWidget::show()
 {
 	if(!m_Window)
 	{
 		m_Window = newwin(m_nHeight, m_nWidth, m_nY, m_nX);
 	}
-	box(m_Window, '+', '+');
+	box(m_Window, 0, 0);
 	wrefresh(m_Window);
 //	refresh();
 }
